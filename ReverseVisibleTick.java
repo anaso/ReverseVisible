@@ -12,8 +12,6 @@ import cpw.mods.fml.common.*;
 
 public class ReverseVisibleTick implements ITickHandler
 {
-	private GuiReverseVisible GuiRV;
-
 	HashMap <String, int[]> Options = new HashMap<String, int[]>();
 
 	private final EnumSet<TickType> tickSet = EnumSet.of(TickType.RENDER);

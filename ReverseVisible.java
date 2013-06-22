@@ -5,6 +5,7 @@ import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.TickRegistry;
 import net.minecraft.src.*;
@@ -35,7 +36,7 @@ import net.minecraft.src.*;
 
 public class ReverseVisible
 {
-	@SidedProxy(clientSide = "anaso_ReverseVisible.ClientProxy", serverSide = "anaso_ReverseVisible.CommonProxy")
+	@SidedProxy(clientSide = "anaso.ReverseVisible.ClientProxy", serverSide = "anaso.ReverseVisible.CommonProxy")
 	public static CommonProxy proxy;
 
 	public static int[] DefaultIDs = {44,53,67,96,108,109,114,126,128,134,135,136,156};
@@ -43,8 +44,6 @@ public class ReverseVisible
 	private int[] BlockIDs;
 
 	HashMap <String, int[]> Options = new HashMap<String, int[]>();
-
-	private GuiReverseVisible GuiRV;
 
 	@Mod.PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -73,7 +72,11 @@ public class ReverseVisible
 	public void Init(FMLInitializationEvent event)
 	{
 		proxy.RegisterTicking(Options);
-		//System.out.println("RV Init");
+	}
+	
+	@Mod.ServerStarting
+	public void serverStarting(FMLServerStartingEvent event){
+		event.registerServerCommand(new AddBlockID());
 	}
 
 	/*
