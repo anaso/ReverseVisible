@@ -73,7 +73,7 @@ public class ReverseVisible
 	{
 		proxy.RegisterTicking(Options);
 	}
-	
+
 	@Mod.ServerStarting
 	public void serverStarting(FMLServerStartingEvent event){
 		event.registerServerCommand(new AddBlockID());
