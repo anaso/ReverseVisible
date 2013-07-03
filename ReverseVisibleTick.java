@@ -26,8 +26,6 @@ public class ReverseVisibleTick implements ITickHandler
 
 		BlockIDs = (int[]) Options.get("BlockIDs");
 
-		//GuiRV = new GuiReverseVisible(ModLoader.getMinecraftInstance());
-		//System.out.println("In ReverseVisibleTick");
 	}
 
 	@Override
@@ -44,7 +42,6 @@ public class ReverseVisibleTick implements ITickHandler
 			ScaledResolution XY = new ScaledResolution(MC.gameSettings, MC.displayWidth, MC.displayHeight);
 			X = (XY.getScaledHeight() / 2) - (XY.getScaledHeight() / 20);
 			Y = (XY.getScaledWidth() / 2);
-			//System.out.println("X:" + X + "  Y:" + Y);
 			MC.fontRenderer.drawStringWithShadow("Reverse", Y, X, 16777215);
 		}
 		else if((MC.objectMouseOver.hitVec.yCoord - MC.objectMouseOver.blockY < 0.5D && MC.objectMouseOver.hitVec.yCoord - MC.objectMouseOver.blockY != -1))
@@ -52,7 +49,6 @@ public class ReverseVisibleTick implements ITickHandler
 			ScaledResolution XY = new ScaledResolution(MC.gameSettings, MC.displayWidth, MC.displayHeight);
 			X = (XY.getScaledHeight() / 2) + (XY.getScaledHeight() / 20);
 			Y = (XY.getScaledWidth() / 2);
-			//System.out.println("X:" + X + "  Y:" + Y);
 			MC.fontRenderer.drawStringWithShadow("Normal", Y, X, 16777215);
 		}
 	}
@@ -73,7 +69,6 @@ public class ReverseVisibleTick implements ITickHandler
 				{
 					if(MC.objectMouseOver.typeOfHit == EnumMovingObjectType.TILE)
 					{
-						//GuiRV.renderGameOverlay(0, false, 0, 0);
 						renderReverseVisible();
 					}
 				}
@@ -89,37 +84,6 @@ public class ReverseVisibleTick implements ITickHandler
 
 	@Override
 	public String getLabel() { return null; }
-
-
-	/*
-	public void onRenderTick()
-	{
-		//System.out.println("onRenderTick");
-	}
-
-	public void onTickInGUI(GuiScreen guiscreen)
-	{
-		//System.out.println("onTickInGUI");
-	}
-
-	public void onTickInGame()
-	{
-		Minecraft MC = ModLoader.getMinecraftInstance();
-		int invSlot = MC.thePlayer.inventory.currentItem;
-		ItemStack invItem =  MC.thePlayer.inventory.mainInventory[invSlot];
-
-		if(invItem != null && MC.currentScreen == null)
-		{
-			if(MC.objectMouseOver != null && ItemCheck(BlockIDs, invItem.getItem().shiftedIndex))
-			{
-				if(MC.objectMouseOver.typeOfHit == EnumMovingObjectType.TILE)
-				{
-					GuiRV.renderGameOverlay(0, false, 0, 0);
-				}
-			}
-		}
-	}
-	*/
 
 	public boolean ItemCheck(int[] IDs, int ICHaveItem)
 	{
