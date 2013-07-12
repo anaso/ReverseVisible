@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.ModLoader;
 
 public class AddBlockID extends CommandBase
 {
@@ -43,11 +44,13 @@ public class AddBlockID extends CommandBase
 	{
 		if(var2.length == 0)
 		{
-			var1.sendChatToPlayer("Not arguments <Number(AddBlockID)>");
+			//var1.sendChatToPlayer("Not arguments <Number(AddBlockID)>");
+			ModLoader.getMinecraftInstance().thePlayer.addChatMessage("No arguments");
 		}
 		else
 		{
-			var1.sendChatToPlayer("TEST:" + var2[0]);
+			//var1.sendChatToPlayer("TEST:" + var2[0]);
+			ModLoader.getMinecraftInstance().thePlayer.addChatMessage("TEST : " + var2[0]);
 		}
 	}
 

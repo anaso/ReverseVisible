@@ -76,20 +76,6 @@ public class ReverseVisible
 
 	@Mod.ServerStarting
 	public void serverStarting(FMLServerStartingEvent event){
-		event.registerServerCommand(new AddBlockID());
+		//event.registerServerCommand(new AddBlockID());
 	}
-
-	/*
-	@Mod.PostInit
-	public void PostInit(FMLPostInitializationEvent event)
-	{
-		KeyBinding[] myBinding = {new KeyBinding("WheatHarvest", MouseRightButton)};
-
-		boolean[] myBindingRepeat = {false};
-
-		WheatHarvestKey myKeyHandler = new WheatHarvestKey(myBinding, myBindingRepeat, Options);
-
-		KeyBindingRegistry.registerKeyBinding(myKeyHandler);
-	}
-	*/
 }
