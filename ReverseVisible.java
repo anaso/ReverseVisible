@@ -27,7 +27,7 @@ import net.minecraft.src.*;
 (
 	modid = "ReverseVisible",
 	name = "Reverse Visible",
-	version = "1.5.2"
+	version = "1.6"
 )
 @NetworkMod
 (
