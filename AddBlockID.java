@@ -2,13 +2,23 @@ package anaso.ReverseVisible;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.ModLoader;
+import net.minecraftforge.common.Configuration;
 
 public class AddBlockID extends CommandBase
 {
+	Configuration cfg;
+
+	AddBlockID(Configuration cfg)
+	{
+		this.cfg = cfg;
+	}
+
 	@Override
 	public String getCommandName() {
 		return "ReverseVisible_AddBlockID";
@@ -49,8 +59,16 @@ public class AddBlockID extends CommandBase
 		}
 		else
 		{
-			//var1.sendChatToPlayer("TEST:" + var2[0]);
-			ModLoader.getMinecraftInstance().thePlayer.addChatMessage("TEST : " + var2[0]);
+			Minecraft MC = ModLoader.getMinecraftInstance();
+
+			if(Integer.parseInt(var2[0]) <= 4096)
+			{
+				MC.thePlayer.addChatMessage("TEST : " + var2[0]);
+			}
+			else
+			{
+				MC.thePlayer.addChatMessage("You Input ItemID! You must input BlockID.");
+			}
 		}
 	}
 

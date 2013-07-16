@@ -2,6 +2,7 @@ package anaso.ReverseVisible;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -29,32 +30,36 @@ import net.minecraft.src.*;
 	name = "Reverse Visible",
 	version = "1.6"
 )
-@NetworkMod
-(
-	clientSideRequired = true
-)
 
 public class ReverseVisible
 {
 	@SidedProxy(clientSide = "anaso.ReverseVisible.ClientProxy", serverSide = "anaso.ReverseVisible.CommonProxy")
 	public static CommonProxy proxy;
 
-	public static int[] DefaultIDs = {44,53,67,96,108,109,114,126,128,134,135,136,156};
+	private static int[] DefaultIDs = {44,53,67,96,108,109,114,126,128,134,135,136,156};
+
+	private boolean EnableDefaultIDs = true;
 
 	private int[] BlockIDs;
 
-	HashMap <String, int[]> Options = new HashMap<String, int[]>();
+	HashMap <String, Object> Options = new HashMap<String, Object>();
 
-	@Mod.PreInit
+	Configuration cfg;
+
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
+		cfg = new Configuration(event.getSuggestedConfigurationFile());
 		try
 		{
 			cfg.load();
+			Property PropEnableDefaultIDs = cfg.get(cfg.CATEGORY_GENERAL, "Enable Default IDs", true, "true = Enable Default Blocks");
 			Property PropIDs  = cfg.get(cfg.CATEGORY_BLOCK, "Use ID", DefaultIDs);
+
+			EnableDefaultIDs = PropEnableDefaultIDs.getBoolean(true);
 			BlockIDs = PropIDs.getIntList();
 
+			Options.put("EnableDefaultIDs", Boolean.valueOf(EnableDefaultIDs));
 			Options.put("BlockIDs", BlockIDs);
 
 		}
@@ -68,14 +73,15 @@ public class ReverseVisible
 		}
 	}
 
-	@Mod.Init
+	@EventHandler
 	public void Init(FMLInitializationEvent event)
 	{
 		proxy.RegisterTicking(Options);
 	}
 
-	@Mod.ServerStarting
-	public void serverStarting(FMLServerStartingEvent event){
-		//event.registerServerCommand(new AddBlockID());
+	@EventHandler
+	public void serverStarting(FMLServerStartingEvent event)
+	{
+		event.registerServerCommand(new AddBlockID(cfg));
 	}
 }
