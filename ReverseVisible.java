@@ -36,7 +36,7 @@ public class ReverseVisible
 	@SidedProxy(clientSide = "anaso.ReverseVisible.ClientProxy", serverSide = "anaso.ReverseVisible.CommonProxy")
 	public static CommonProxy proxy;
 
-	private static int[] DefaultIDs = {44,53,67,96,108,109,114,126,128,134,135,136,156};
+	int[] DefaultIDs = {44,53,67,96,108,109,114,126,128,134,135,136,156};
 
 	private boolean EnableDefaultIDs = true;
 
@@ -77,11 +77,5 @@ public class ReverseVisible
 	public void Init(FMLInitializationEvent event)
 	{
 		proxy.RegisterTicking(Options);
-	}
-
-	@EventHandler
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-		event.registerServerCommand(new AddBlockID(cfg));
 	}
 }
