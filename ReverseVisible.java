@@ -20,7 +20,12 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.relauncher.Side;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import net.minecraft.src.*;
 
@@ -50,18 +55,30 @@ public class ReverseVisible
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		cfg = new Configuration(event.getSuggestedConfigurationFile());
+		
+		int[] empty = {};
+		
 		try
 		{
 			cfg.load();
 			Property PropEnableDefaultIDs = cfg.get(cfg.CATEGORY_GENERAL, "Enable Default IDs", true, "true = Enable Default Blocks");
-			Property PropIDs  = cfg.get(cfg.CATEGORY_BLOCK, "Use ID", DefaultIDs);
+			Property PropIDs  = cfg.get(cfg.CATEGORY_BLOCK, "Use ID", empty);
 
 			EnableDefaultIDs = PropEnableDefaultIDs.getBoolean(true);
 			BlockIDs = PropIDs.getIntList();
 
 			Options.put("EnableDefaultIDs", Boolean.valueOf(EnableDefaultIDs));
 			Options.put("BlockIDs", BlockIDs);
-
+			
+			if(EnableDefaultIDs)
+			{
+				int[] marge = new int[DefaultIDs.length + BlockIDs.length];
+				
+				System.arraycopy(DefaultIDs, 0, marge, 0, DefaultIDs.length);
+				System.arraycopy(BlockIDs, 0, marge, DefaultIDs.length, BlockIDs.length);
+				
+				Options.put("BlockIDs", marge);
+			}
 		}
 		catch (Exception e)
 		{

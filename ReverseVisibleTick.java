@@ -25,7 +25,6 @@ public class ReverseVisibleTick implements ITickHandler
 		this.Options = Options;
 
 		BlockIDs = (int[]) Options.get("BlockIDs");
-
 	}
 
 	@Override
@@ -88,7 +87,6 @@ public class ReverseVisibleTick implements ITickHandler
 	public boolean ItemCheck(int[] IDs, int ICHaveItem)
 	{
 		boolean re = false;
-
 
 		for(int i=0; i<IDs.length; i++)
 		{
