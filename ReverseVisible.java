@@ -35,6 +35,11 @@ import net.minecraft.src.*;
 	name = "Reverse Visible",
 	version = "1.6"
 )
+@NetworkMod
+(
+		clientSideRequired = false,
+		serverSideRequired = false
+)
 
 public class ReverseVisible
 {
@@ -55,9 +60,9 @@ public class ReverseVisible
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		cfg = new Configuration(event.getSuggestedConfigurationFile());
-		
+
 		int[] empty = {};
-		
+
 		try
 		{
 			cfg.load();
@@ -69,14 +74,14 @@ public class ReverseVisible
 
 			Options.put("EnableDefaultIDs", Boolean.valueOf(EnableDefaultIDs));
 			Options.put("BlockIDs", BlockIDs);
-			
+
 			if(EnableDefaultIDs)
 			{
 				int[] marge = new int[DefaultIDs.length + BlockIDs.length];
-				
+
 				System.arraycopy(DefaultIDs, 0, marge, 0, DefaultIDs.length);
 				System.arraycopy(BlockIDs, 0, marge, DefaultIDs.length, BlockIDs.length);
-				
+
 				Options.put("BlockIDs", marge);
 			}
 		}
