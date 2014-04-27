@@ -65,7 +65,7 @@ public class ReverseVisibleTick{
 
 	public boolean blockCheck(Item haveItem){
 		boolean re = false;
-		System.out.println(haveItem.getUnlocalizedName());
+		System.out.println("have item unlocalized name" + haveItem.getUnlocalizedName());
 
 		if(BlackList.length > 0){
 			for(int i = 0; i < BlackList.length; i++){
