@@ -76,6 +76,6 @@ public class ReverseVisibleTick{
 			}
 		}
 
-		return re;
+		return true;
 	}
 }
