@@ -1,18 +1,16 @@
 package anaso.ReverseVisible;
 
-import java.util.HashMap;
-
-import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.src.*;
+
+import java.util.HashMap;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy
 {
-	@Override
 	public void RegisterTicking(HashMap Options)
 	{
-		TickRegistry.registerTickHandler(new ReverseVisibleTick(Options), Side.CLIENT);
+		FMLCommonHandler.instance().bus().register(new ReverseVisibleTick(Options));
 	}
 }
