@@ -12,8 +12,9 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.RegistryNamespaced;
 
-import java.util.HashMap;
+import java.util.*;
 
 @SideOnly(Side.CLIENT)
 public class ReverseVisibleTick{
@@ -24,11 +25,50 @@ public class ReverseVisibleTick{
 
 	private int X = 0, Y = 0;
 
+	RegistryNamespaced blockNamespace = Block.blockRegistry;
+	RegistryNamespaced itemNamespace = Item.itemRegistry;
+
+	String[] allBlocks = Arrays.asList(blockNamespace.getKeys().toArray()).toArray(new String[blockNamespace.getKeys().toArray().length]);
+	List<Object> enableBlockAndItem = new ArrayList();
+
 	public ReverseVisibleTick(HashMap Options){
 		this.Options = Options;
 
 		WhiteList = (String[]) Options.get("WhiteList");
 		BlackList = (String[]) Options.get("BlackList");
+		enableBlockAndItem = createEnableObjects(WhiteList, BlackList);
+	}
+
+	List<Object> createEnableObjects(String[] WhiteList, String[] BlackList){
+		List<Object> enableObject = new ArrayList();
+
+		for(String whiteName : WhiteList){
+			whiteName.trim();
+			for(String checkString : allBlocks){
+				checkString.trim();
+				if(checkString.indexOf(whiteName) >= 0){
+					Object blockObject = blockNamespace.getObject(checkString);
+					if(blockObject != null){
+						// ブロックじゃなかったらアイテムを試す
+						blockObject = itemNamespace.getObject(checkString);
+					}
+
+					if(!enableObject.contains(blockObject)){
+						for(String blackName : BlackList){
+							blackName.trim();
+							if(checkString.endsWith(":"+blackName)){
+								blockObject = null;
+							}
+						}
+						if(blockObject != null){
+							enableObject.add(blockObject);
+						}
+					}
+				}
+			}
+		}
+
+		return enableObject;
 	}
 
 	public void renderReverseVisible(Minecraft MC){
@@ -64,18 +104,19 @@ public class ReverseVisibleTick{
 	}
 
 	public boolean blockCheck(Item haveItem){
-		boolean re = false;
-		System.out.println("have item unlocalized name" + haveItem.getUnlocalizedName());
+		boolean reBoolean = false;
 
-		if(BlackList.length > 0){
-			for(int i = 0; i < BlackList.length; i++){
-				if(BlackList[i].equals(haveItem.getUnlocalizedName())){
-					re = false;
-					break;
-				}
+		if(enableBlockAndItem.contains(haveItem)){
+			reBoolean = true;
+		}
+		else
+		{
+			if(enableBlockAndItem.contains(Block.getBlockFromItem(haveItem)))
+			{
+				reBoolean = true;
 			}
 		}
 
-		return true;
+		return reBoolean;
 	}
 }
