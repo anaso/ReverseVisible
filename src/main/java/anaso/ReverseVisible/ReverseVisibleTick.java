@@ -1,6 +1,5 @@
 package anaso.ReverseVisible;
 
-import com.sun.deploy.util.BlackList;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -14,7 +13,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.RegistryNamespaced;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class ReverseVisibleTick{
@@ -29,7 +31,7 @@ public class ReverseVisibleTick{
 	RegistryNamespaced itemNamespace = Item.itemRegistry;
 
 	String[] allBlocks = Arrays.asList(blockNamespace.getKeys().toArray()).toArray(new String[blockNamespace.getKeys().toArray().length]);
-	List<Object> enableBlockAndItem = new ArrayList();
+	List<Object> enableBlockAndItem = new ArrayList<Object>();
 
 	public ReverseVisibleTick(HashMap Options){
 		this.Options = Options;
@@ -37,16 +39,17 @@ public class ReverseVisibleTick{
 		WhiteList = (String[]) Options.get("WhiteList");
 		BlackList = (String[]) Options.get("BlackList");
 		enableBlockAndItem = createEnableObjects(WhiteList, BlackList);
+		System.out.println("Reverse Visible enabled " + enableBlockAndItem.size() + " Blocks");
 	}
 
 	List<Object> createEnableObjects(String[] WhiteList, String[] BlackList){
-		List<Object> enableObject = new ArrayList();
+		List<Object> enableObject = new ArrayList<Object>();
 
 		for(String whiteName : WhiteList){
 			whiteName.trim();
 			for(String checkString : allBlocks){
 				checkString.trim();
-				if(checkString.indexOf(whiteName) >= 0){
+				if(checkString.contains(whiteName)){
 					Object blockObject = blockNamespace.getObject(checkString);
 					if(blockObject != null){
 						// ブロックじゃなかったらアイテムを試す
@@ -56,7 +59,7 @@ public class ReverseVisibleTick{
 					if(!enableObject.contains(blockObject)){
 						for(String blackName : BlackList){
 							blackName.trim();
-							if(checkString.endsWith(":"+blackName)){
+							if(checkString.equals(blackName)){
 								blockObject = null;
 							}
 						}
@@ -74,12 +77,12 @@ public class ReverseVisibleTick{
 	public void renderReverseVisible(Minecraft MC){
 		if(MC.objectMouseOver.hitVec.yCoord - MC.objectMouseOver.blockY > 0.5D && MC.objectMouseOver.hitVec.yCoord - MC.objectMouseOver.blockY != 1){
 			ScaledResolution XY = new ScaledResolution(MC.gameSettings, MC.displayWidth, MC.displayHeight);
-			X = (XY.getScaledHeight() / 2) - (XY.getScaledHeight() / 20);
+			X = (XY.getScaledHeight() / 2) - 6 - MC.fontRenderer.FONT_HEIGHT;
 			Y = (XY.getScaledWidth() / 2);
 			MC.fontRenderer.drawStringWithShadow("Reverse", Y, X, 16777215);
-		} else if((MC.objectMouseOver.hitVec.yCoord - MC.objectMouseOver.blockY < 0.5D && MC.objectMouseOver.hitVec.yCoord - MC.objectMouseOver.blockY != -1)){
+		} else if((MC.objectMouseOver.hitVec.yCoord - MC.objectMouseOver.blockY < 0.5D && MC.objectMouseOver.hitVec.yCoord - MC.objectMouseOver.blockY != -1 && MC.objectMouseOver.hitVec.yCoord - MC.objectMouseOver.blockY != 0D)){
 			ScaledResolution XY = new ScaledResolution(MC.gameSettings, MC.displayWidth, MC.displayHeight);
-			X = (XY.getScaledHeight() / 2) + (XY.getScaledHeight() / 20);
+			X = (XY.getScaledHeight() / 2) + 9;
 			Y = (XY.getScaledWidth() / 2);
 			MC.fontRenderer.drawStringWithShadow("Normal", Y, X, 16777215);
 		}
@@ -108,11 +111,8 @@ public class ReverseVisibleTick{
 
 		if(enableBlockAndItem.contains(haveItem)){
 			reBoolean = true;
-		}
-		else
-		{
-			if(enableBlockAndItem.contains(Block.getBlockFromItem(haveItem)))
-			{
+		} else{
+			if(enableBlockAndItem.contains(Block.getBlockFromItem(haveItem))){
 				reBoolean = true;
 			}
 		}

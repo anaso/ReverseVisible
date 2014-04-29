@@ -22,7 +22,7 @@ public class ReverseVisible
 
 	private String[] WhiteList = {"slab", "stairs"};
 
-	private String[] BlackList;
+	private String[] BlackList = {"minecraft:double_stone_slab", "minecraft:double_wooden_slab"};
 
 	HashMap <String, Object> Options = new HashMap<String, Object>();
 
@@ -33,13 +33,11 @@ public class ReverseVisible
 	{
 		cfg = new Configuration(event.getSuggestedConfigurationFile());
 
-		String[] empty = {};
-
 		try
 		{
 			cfg.load();
 			Property PropWhiteList = cfg.get("Block name", "WhiteList", WhiteList);
-			Property PropBlackList  = cfg.get("Block name", "BlackList", empty);
+			Property PropBlackList  = cfg.get("Block name", "BlackList", BlackList);
 
 			WhiteList = PropWhiteList.getStringList();
 			BlackList = PropBlackList.getStringList();
