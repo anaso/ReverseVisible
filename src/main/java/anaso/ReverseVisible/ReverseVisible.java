@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 @Mod
 (
-	modid = "anaso.ReverseVisible",
+	modid = "ReverseVisible",
 	version = "1.0"
 )
 public class ReverseVisible
